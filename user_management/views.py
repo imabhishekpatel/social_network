@@ -1,11 +1,10 @@
 from django.shortcuts import render
 from rest_framework_simplejwt.views import TokenObtainPairView
-from django.contrib.auth.models import User
-from django.http import JsonResponse
 from rest_framework import status
 from .models import CustomUser
 from rest_framework.response import Response
-# Create your views here.
+from rest_framework import generics
+from .serializers import UserSerializer
 
 
 class UserToken(TokenObtainPairView):
@@ -31,3 +30,16 @@ class UserToken(TokenObtainPairView):
 
 
         return super().post(request, *args, **kwargs) 
+    
+
+class SignupView(generics.CreateAPIView):
+    serializer_class = UserSerializer
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        user = serializer.save()
+        return Response({
+            'user': UserSerializer(user, context=self.get_serializer_context()).data,
+            'message': 'User created successfully'
+        })

@@ -16,10 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from user_management.views import UserToken
+from user_management.views import UserToken,SignupView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('api/login/', UserToken.as_view(), name='token_obtain_pair'),
+    path('api/login/', UserToken.as_view()),
+    path('api/signup/', SignupView.as_view()),
     path('api/user/',include('user_management.urls')),
 ]
