@@ -20,7 +20,5 @@ from user_management.views import UserToken,SignupView
 
 urlpatterns = [
     path("admin/", admin.site.urls),
-    path('api/login/', UserToken.as_view()),
-    path('api/signup/', SignupView.as_view()),
     path('api/user/',include('user_management.urls')),
 ]
